@@ -6,31 +6,26 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
-import com.lebogang.triwizard.pojo.Houses;
+import com.lebogang.triwizard.pojo.Spells;
 import com.lebogang.triwizard.repo.MyRepository;
 
 import java.util.List;
 
-public class HousesViewModel extends AndroidViewModel {
+public class SpellsViewModel extends AndroidViewModel {
     @NonNull
     private MyRepository repo = MyRepository.getInstance();
 
     @NonNull
-    private LiveData<List<Houses>> mLiveData;
+    private LiveData<List<Spells>> mLiveData;
 
-    public HousesViewModel(@NonNull Application application) {
+    public SpellsViewModel(@NonNull Application application) {
         super(application);
         // The local live data needs to reference the repository live data
-        mLiveData = repo.getHousesLiveData();
+        mLiveData = repo.getSpellsLiveData();
     }
 
     @NonNull
-    public LiveData<List<Houses>> getHousesLiveData() {
+    public LiveData<List<Spells>> getSpellsLiveData() {
         return mLiveData;
     }
-
-    /*@NonNull
-    public LiveData<List<Spells>> getMyLiveData() {
-        return mLiveData;
-    }*/
 }

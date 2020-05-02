@@ -23,12 +23,12 @@ public class HousesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     private LayoutInflater inflater;
     private List<Houses> data = Collections.emptyList();
 
-    // Create constructor to initialize context and data sent from MainActivity.
-    public HousesAdapter(Context context, List<Houses> data){
+    // Create constructor to initialize context and data sent from HousesActivity.
+    public HousesAdapter(Context context, List<Houses> data) {
         Log.i(TAG, "Creating Constructor.");
 
-        inflater= LayoutInflater.from(context);
-        this.data=data;
+        inflater = LayoutInflater.from(context);
+        this.data = data;
     }
 
     // Inflate the layout when ViewHolder is created.
@@ -36,7 +36,7 @@ public class HousesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         Log.i(TAG, "Inflating the layout.");
-        View view=inflater.inflate(R.layout.houses_item, parent,false);
+        View view = inflater.inflate(R.layout.houses_item, parent, false);
         return new HousesViewHolder(view);
     }
 
@@ -44,12 +44,12 @@ public class HousesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         Log.i(TAG, "Binding data.");
-    // Get current position of item in recyclerview to bind data and assign values from list
-        HousesViewHolder myHolder= (HousesViewHolder) holder;
-        Houses current = data.get(position);
-        myHolder.textFishName.setText(current.name);
-        myHolder.textSize.setText(current.mascot);
-        myHolder.members.setText(current.members);
+        // Get houses position of item in recyclerview to bind data and assign values from list
+        HousesViewHolder myHolder = (HousesViewHolder) holder;
+        Houses houses = data.get(position);
+        myHolder.textFishName.setText(houses.name);
+        myHolder.textSize.setText(houses.mascot);
+        myHolder.members.setText(houses.school);
     }
 
     // return total item from List
@@ -58,7 +58,7 @@ public class HousesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         return data.size();
     }
 
-    static class HousesViewHolder extends RecyclerView.ViewHolder{
+    static class HousesViewHolder extends RecyclerView.ViewHolder {
 
         TextView textFishName;
         TextView textSize;
@@ -68,9 +68,9 @@ public class HousesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         public HousesViewHolder(View itemView) {
             super(itemView);
             Log.i(TAG, "Creating ViewHolder.");
-            textFishName= (TextView) itemView.findViewById(R.id.textView);
-            textSize = (TextView) itemView.findViewById(R.id.textView2);
-            members = itemView.findViewById(R.id.textView3);
+            textFishName = itemView.findViewById(R.id.spells);
+            textSize = itemView.findViewById(R.id.type);
+            members = itemView.findViewById(R.id.effect);
         }
 
     }

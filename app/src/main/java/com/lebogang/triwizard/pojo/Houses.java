@@ -6,7 +6,9 @@ package com.lebogang.triwizard.pojo;
  * */
 public class Houses {
     public String name;
+    public String school;
     public String mascot;
     public String HOD;
+    public String houseGhost;
     public String members;
 }
