@@ -21,8 +21,11 @@ import java.util.List;
 
 public class MyRepository {
 
+    //URL that points to the houses JSON
     private final static String HOUSES_ENDPOINT =
             "https://www.potterapi.com/v1/houses?key=$2a$10$1JEnmtEF417yBaFZcr51qukRjaKv8d5toEG5DKP/IUZWIVwfsaF7y";
+
+    //URL that points to the spells JSON
     private final static String SPELLS_ENDPOINT =
             "https://www.potterapi.com/v1/spells?key=$2a$10$1JEnmtEF417yBaFZcr51qukRjaKv8d5toEG5DKP/IUZWIVwfsaF7y";
 

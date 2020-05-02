@@ -3,6 +3,7 @@ package com.lebogang.triwizard;
 import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.widget.ContentLoadingProgressBar;
@@ -12,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.lebogang.triwizard.adapter.HousesAdapter;
+import com.lebogang.triwizard.networking.NetworkUtils;
 import com.lebogang.triwizard.pojo.Houses;
 import com.lebogang.triwizard.model.HousesViewModel;
 import com.lebogang.triwizard.repo.MyRepository;
@@ -63,7 +65,14 @@ public class HousesActivity extends AppCompatActivity {
             }
         });
 
-        // This will start the off-the-UI-thread work that we want to perform.
-        MyRepository.getInstance().getHouses();
+        //condition to check whether to request data provided there's an internet connection or not.
+        if(!NetworkUtils.isInternetAvailable()){
+            // This will start the off-the-UI-thread work that we want to perform.
+            MyRepository.getInstance().getHouses();
+        }else{
+            //Show AlertDialog to prompt user to get a connection.
+            Toast.makeText(context, "No connection", Toast.LENGTH_LONG).show();
+        }
+
     }
 }
