@@ -213,7 +213,7 @@ public class MyRepository {
                         //
                         characters.name = jsonObject.getString("name");
                         characters.role = jsonObject.getString("role");
-                        characters.house = jsonObject.getString("house");
+                        characters.house = jsonObject.getString("bloodStatus");
                         characters.school = jsonObject.getString("school");
 
                         //Store the data into an ArrayList.

@@ -2,8 +2,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.lebogang.triwizard" >
     <!-- Asking permission to access the internet -->
-    <uses-permission android:name="android.permission.INTERNET" /> <!-- Asking permission to access the WiFi states -->
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" /> <!-- Asking permission to access the phone's network states -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <!-- Asking permission to access the WiFi states -->
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <!-- Asking permission to access the phone's network states -->
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
@@ -13,14 +15,21 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme" >
-        <activity android:name=".CharactersActivity" >
-        </activity>
+
+        <!-- CharactersActivity -->
+        <activity android:name=".CharactersActivity"
+            android:label="@string/students"
+            android:launchMode="singleTop"
+            android:parentActivityName=".MainActivity"/>
+
         <!-- SpellsActivity -->
         <activity
             android:name=".SpellsActivity"
             android:label="@string/spells"
             android:launchMode="singleTop"
-            android:parentActivityName=".MainActivity" /> <!-- MainActivity -->
+            android:parentActivityName=".MainActivity" />
+
+        <!-- MainActivity -->
         <activity android:name=".MainActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

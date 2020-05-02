@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
+import com.lebogang.triwizard.pojo.Characters;
+
 public class MainActivity extends AppCompatActivity {
 
     @Override
@@ -20,5 +22,9 @@ public class MainActivity extends AppCompatActivity {
 
     public void viewSpellsActivity(View view){
         startActivity(new Intent(this, SpellsActivity.class));
+    }
+
+    public void viewCharactersActivity(View view){
+        startActivity(new Intent(this, CharactersActivity.class));
     }
 }
