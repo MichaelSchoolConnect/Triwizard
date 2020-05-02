@@ -73,6 +73,5 @@ public class HousesActivity extends AppCompatActivity {
             //Show AlertDialog to prompt user to get a connection.
             Toast.makeText(context, "No connection", Toast.LENGTH_LONG).show();
         }
-
     }
 }

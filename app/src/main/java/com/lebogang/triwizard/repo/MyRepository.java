@@ -7,6 +7,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.lebogang.triwizard.networking.NetworkUtils;
+import com.lebogang.triwizard.pojo.Characters;
 import com.lebogang.triwizard.pojo.Houses;
 import com.lebogang.triwizard.pojo.Spells;
 import com.lebogang.triwizard.threadexecutor.AppExecutors;
@@ -29,6 +30,10 @@ public class MyRepository {
     private final static String SPELLS_ENDPOINT =
             "https://www.potterapi.com/v1/spells?key=$2a$10$1JEnmtEF417yBaFZcr51qukRjaKv8d5toEG5DKP/IUZWIVwfsaF7y";
 
+    //URL that points to the characters JSON
+    private final static String CHARACTERS_ENDPOINT =
+            "https://www.potterapi.com/v1/characters?key=$2a$10$1JEnmtEF417yBaFZcr51qukRjaKv8d5toEG5DKP/IUZWIVwfsaF7y";
+
 
     /**
      * This is an instance of the @class MyRepository class that will be used in the
@@ -42,6 +47,9 @@ public class MyRepository {
 
     @NonNull
     private MutableLiveData<List<Spells>> mutableSpellsLiveData = new MutableLiveData<>();
+
+    @NonNull
+    private MutableLiveData<List<Characters>> mutableCharactersLiveData = new MutableLiveData<>();
 
     public static MyRepository getInstance() {
         if (instance == null) {
@@ -63,6 +71,11 @@ public class MyRepository {
     @NonNull
     public LiveData<List<Spells>> getSpellsLiveData() {
         return mutableSpellsLiveData;
+    }
+
+    @NonNull
+    public LiveData<List<Characters>> getCharactersLiveData() {
+        return mutableCharactersLiveData;
     }
 
     /**
@@ -170,5 +183,53 @@ public class MyRepository {
             }
         });
     }
+
+    public void getCharacters(){
+        AppExecutors appExecutors = new AppExecutors();
+        appExecutors.diskIO().execute(new Runnable() {
+            @Override
+            public void run() {
+                List<Characters> data = new ArrayList<>();
+                URL url = NetworkUtils.buildUrl(CHARACTERS_ENDPOINT);
+                String result = null;
+                try {
+                    result = NetworkUtils.getResponseFromHttpUrl(url);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                System.out.println("Spell results: " + result);
+                JSONArray jArray = null;
+                try {
+                    jArray = new JSONArray(result);
+
+                    for (int i = 0; i < jArray.length(); i++) {
+
+                        //Get objects from the JSONArray.
+                        JSONObject jsonObject = jArray.getJSONObject(i);
+
+                        //Initialize an object of the class House so we can append data to it.
+                        Characters characters = new Characters();
+
+                        //
+                        characters.name = jsonObject.getString("name");
+                        characters.role = jsonObject.getString("role");
+                        characters.house = jsonObject.getString("house");
+                        characters.school = jsonObject.getString("school");
+
+                        //Store the data into an ArrayList.
+                        data.add(characters);
+
+                        //Post the value(s) of the data to the LiveData Object.
+                        mutableCharactersLiveData.postValue(data);
+                        Log.i("Repo: ", String.valueOf(characters.role));
+
+                    }
+                } catch (Exception j) {
+                    j.printStackTrace();
+                }
+            }
+        });
+    }
+
 }
 

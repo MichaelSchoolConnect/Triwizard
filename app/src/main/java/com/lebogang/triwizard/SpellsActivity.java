@@ -3,6 +3,7 @@ package com.lebogang.triwizard;
 import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.widget.ContentLoadingProgressBar;
@@ -13,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.lebogang.triwizard.adapter.SpellsAdapter;
 import com.lebogang.triwizard.model.SpellsViewModel;
+import com.lebogang.triwizard.networking.NetworkUtils;
 import com.lebogang.triwizard.pojo.Spells;
 import com.lebogang.triwizard.repo.MyRepository;
 
@@ -64,8 +66,14 @@ public class SpellsActivity extends AppCompatActivity {
                 }
             });
 
-            // This will start the off-the-UI-thread work that we want to perform.
-            MyRepository.getInstance().getSpells();
+            //condition to check whether to request data provided there's an internet connection or not.
+            if(!NetworkUtils.isInternetAvailable()){
+                // This will start the off-the-UI-thread work that we want to perform.
+                MyRepository.getInstance().getSpells();
+            }else{
+                //Show AlertDialog to prompt user to get a connection.
+                Toast.makeText(context, "No connection", Toast.LENGTH_LONG).show();
+            }
 
         }catch (Exception e){
             e.printStackTrace();
