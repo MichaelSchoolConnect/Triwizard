@@ -19,6 +19,7 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class MyRepository {
@@ -120,8 +121,8 @@ public class MyRepository {
                         //Initialize an object of the class House so we can append data to it.
                         Houses house_data = new Houses();
 
-                        //
-                        house_data.name = jsonObject.getString("_id");
+                        //Set data to references.
+                        house_data.id = jsonObject.getString("_id");
                         house_data.name = jsonObject.getString("name");
                         house_data.mascot = jsonObject.getString("mascot");
                         house_data.houseGhost = jsonObject.getString("houseGhost");
@@ -247,36 +248,50 @@ public class MyRepository {
         executors.diskIO().execute(new Runnable() {
             @Override
             public void run() {
+                 //Initialize an object of the class House so we can append data to it.
+                HousesInfo house_data = new HousesInfo();
+
+                //A data structure that will hold a collection of the returned JSON objects/data.
                 List<HousesInfo> data = new ArrayList<>();
-                List<Houses> data1 = new ArrayList<>();
+
+                List<String> data2 = new ArrayList<>();
+
+                //Pass the parameter @endPoint and build it as a URL.
                 URL url = NetworkUtils.buildUrl(endPoint);
+
+                //The results that we get from the HTTP Response.
                 String result = null;
                 try {
+                    //Get the response from HTTP, if null, catch en exception.
                     result = NetworkUtils.getResponseFromHttpUrl(url);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
+
+                //Printing out the results to the console for debugging purposes.
                 System.out.println("Repo results: " + result);
+
+                //A JSONArray object that we pass the results into for iteration purposes.
+                //Set it to null and initialize it later
                 JSONArray jArray = null;
 
+                //Try to get the data.
                 try {
                     jArray = new JSONArray(result);
 
                     //Loop through the outter array.
                     for (int i = 0; i < jArray.length(); i++) {
-
-                        //Get objects from the JSONArray.
                         JSONObject jsonObject = jArray.getJSONObject(i);
 
-                        //Initialize an object of the class House so we can append data to it.
-                        HousesInfo house_data = new HousesInfo();
+                        //Get id
+                        house_data.id = jsonObject.getString("_id");
+                        Log.i("Id", "Id: " + house_data.id);
 
                         //Loop through the inner array
                         for(int e = 0; e < jArray.length(); e++){
                             JSONObject object = jArray.getJSONObject(e);
-                            //house_data.HOD = object.getString("values");
-                            house_data.values_0 = object.getString("0");
-                            //data1.add(house_data);
+                            house_data.values_1 = object.getString("values");
+
                             //Store the data into an ArrayList.
                             data.add(house_data);
 

@@ -15,6 +15,7 @@ package com.lebogang.triwizard.pojo;
          **/
 
         //Reference to the first value
+        public String id;
         public String values_0;
         public String values_1;
         public String values_2;
