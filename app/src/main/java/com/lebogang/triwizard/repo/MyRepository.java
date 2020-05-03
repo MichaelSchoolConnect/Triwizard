@@ -9,6 +9,7 @@ import androidx.lifecycle.MutableLiveData;
 import com.lebogang.triwizard.networking.NetworkUtils;
 import com.lebogang.triwizard.pojo.Characters;
 import com.lebogang.triwizard.pojo.Houses;
+import com.lebogang.triwizard.pojo.HousesInfo;
 import com.lebogang.triwizard.pojo.Spells;
 import com.lebogang.triwizard.threadexecutor.AppExecutors;
 
@@ -46,6 +47,9 @@ public class MyRepository {
     private MutableLiveData<List<Houses>> mutableHousesLiveData = new MutableLiveData<>();
 
     @NonNull
+    private MutableLiveData<List<HousesInfo>> mutableHousesInfoLiveData = new MutableLiveData<>();
+
+    @NonNull
     private MutableLiveData<List<Spells>> mutableSpellsLiveData = new MutableLiveData<>();
 
     @NonNull
@@ -66,6 +70,11 @@ public class MyRepository {
     @NonNull
     public LiveData<List<Houses>> getHousesLiveData() {
         return mutableHousesLiveData;
+    }
+
+    @NonNull
+    public LiveData<List<HousesInfo>> getHousesInfoLiveData() {
+        return mutableHousesInfoLiveData;
     }
 
     @NonNull
@@ -112,6 +121,7 @@ public class MyRepository {
                         Houses house_data = new Houses();
 
                         //
+                        house_data.name = jsonObject.getString("_id");
                         house_data.name = jsonObject.getString("name");
                         house_data.mascot = jsonObject.getString("mascot");
                         house_data.houseGhost = jsonObject.getString("houseGhost");
@@ -231,5 +241,56 @@ public class MyRepository {
         });
     }
 
+    public void getHousesInfo(final String endPoint){
+        //I made this into a local variable so it can be killed after calling this method to save resources.
+        AppExecutors executors = new AppExecutors();
+        executors.diskIO().execute(new Runnable() {
+            @Override
+            public void run() {
+                List<HousesInfo> data = new ArrayList<>();
+                List<Houses> data1 = new ArrayList<>();
+                URL url = NetworkUtils.buildUrl(endPoint);
+                String result = null;
+                try {
+                    result = NetworkUtils.getResponseFromHttpUrl(url);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                System.out.println("Repo results: " + result);
+                JSONArray jArray = null;
+
+                try {
+                    jArray = new JSONArray(result);
+
+                    //Loop through the outter array.
+                    for (int i = 0; i < jArray.length(); i++) {
+
+                        //Get objects from the JSONArray.
+                        JSONObject jsonObject = jArray.getJSONObject(i);
+
+                        //Initialize an object of the class House so we can append data to it.
+                        HousesInfo house_data = new HousesInfo();
+
+                        //Loop through the inner array
+                        for(int e = 0; e < jArray.length(); e++){
+                            JSONObject object = jArray.getJSONObject(e);
+                            //house_data.HOD = object.getString("values");
+                            house_data.values_0 = object.getString("0");
+                            //data1.add(house_data);
+                            //Store the data into an ArrayList.
+                            data.add(house_data);
+
+                            //Post the value(s) of the data to the LiveData Object.
+                            //Re-use the same object?
+                            mutableHousesInfoLiveData.postValue(data);
+                            Log.i("Houses Info: ", String.valueOf(house_data.values_0));
+                        }
+                    }
+                } catch (Exception j) {
+                    j.printStackTrace();
+                }
+            }
+        });
+    }
 }
 

@@ -80,4 +80,11 @@ public class NetworkUtils {
         }
     }
 
+    //Acts as a "generic" - doesn't take any other primitive data type - method.
+    //Used to pass parameters that belong to right API call for Id types(Character & House)
+    public static String genericEndpoint(String route, String id){
+        return "https://www.potterapi.com/v1/"
+                + route + "/"
+                + id + "key=$2a$10$BD8PoevCo5yISOJlHy47geFYut1/qYjjtKHLQeHW2ZUD.3RndOJXa";
+    }
 }

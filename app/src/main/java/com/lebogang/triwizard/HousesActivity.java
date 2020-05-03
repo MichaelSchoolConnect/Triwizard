@@ -15,7 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.lebogang.triwizard.adapter.HousesAdapter;
 import com.lebogang.triwizard.networking.NetworkUtils;
 import com.lebogang.triwizard.pojo.Houses;
-import com.lebogang.triwizard.model.HousesViewModel;
+import com.lebogang.triwizard.viewmodel.HousesViewModel;
 import com.lebogang.triwizard.repo.MyRepository;
 
 import java.util.List;

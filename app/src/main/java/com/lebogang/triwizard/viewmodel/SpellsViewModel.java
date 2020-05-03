@@ -1,4 +1,4 @@
-package com.lebogang.triwizard.model;
+package com.lebogang.triwizard.viewmodel;
 
 import android.app.Application;
 

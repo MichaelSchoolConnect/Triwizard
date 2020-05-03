@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.lebogang.triwizard.adapter.CharactersAdapter;
-import com.lebogang.triwizard.model.CharactersViewModel;
+import com.lebogang.triwizard.viewmodel.CharactersViewModel;
 import com.lebogang.triwizard.networking.NetworkUtils;
 import com.lebogang.triwizard.pojo.Characters;
 import com.lebogang.triwizard.repo.MyRepository;

@@ -1,6 +1,7 @@
 package com.lebogang.triwizard.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +11,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.lebogang.triwizard.HousesInfoActivity;
 import com.lebogang.triwizard.R;
 import com.lebogang.triwizard.pojo.Houses;
 
@@ -20,13 +22,15 @@ public class HousesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
     private static String TAG = HousesAdapter.class.getSimpleName();
 
+    private Context context;
+
     private LayoutInflater inflater;
     private List<Houses> data = Collections.emptyList();
 
     // Create constructor to initialize context and data sent from HousesActivity.
     public HousesAdapter(Context context, List<Houses> data) {
         Log.i(TAG, "Creating Constructor.");
-
+        this.context = context;
         inflater = LayoutInflater.from(context);
         this.data = data;
     }
@@ -42,14 +46,27 @@ public class HousesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
     // Bind data
     @Override
-    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, final int position) {
         Log.i(TAG, "Binding data.");
         // Get houses position of item in recyclerview to bind data and assign values from list
-        HousesViewHolder myHolder = (HousesViewHolder) holder;
-        Houses houses = data.get(position);
-        myHolder.textFishName.setText(houses.name);
-        myHolder.textSize.setText(houses.mascot);
-        myHolder.members.setText(houses.school);
+        HousesViewHolder housesViewHolder = (HousesViewHolder) holder;
+        final Houses houses = data.get(position);
+        final String id = houses.id;
+        housesViewHolder.textFishName.setText(houses.name);
+        housesViewHolder.textSize.setText(houses.mascot);
+        housesViewHolder.members.setText(houses.school);
+
+        //Set the Recyclerview onClick and pass data to an Intent
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.i(TAG, "Position: " + position + "House Name: " + houses.name
+                + " House Id: " + houses.id);
+                Intent intent = new Intent(context, HousesInfoActivity.class);
+                intent.putExtra("id", "5a05e2b252f721a3cf2ea33f");
+                context.startActivity(intent);
+            }
+        });
     }
 
     // return total item from List
@@ -58,13 +75,16 @@ public class HousesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         return data.size();
     }
 
+    /**
+     * Inner class that holds reference to view objects.
+     * */
     static class HousesViewHolder extends RecyclerView.ViewHolder {
 
         TextView textFishName;
         TextView textSize;
         TextView members;
 
-        // Create constructor to get widget/views reference(s).
+        // Create constructor to get widget/view reference(s).
         public HousesViewHolder(View itemView) {
             super(itemView);
             Log.i(TAG, "Creating ViewHolder.");
@@ -72,6 +92,5 @@ public class HousesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             textSize = itemView.findViewById(R.id.type);
             members = itemView.findViewById(R.id.effect);
         }
-
     }
 }

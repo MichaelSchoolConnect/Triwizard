@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.lebogang.triwizard.adapter.SpellsAdapter;
-import com.lebogang.triwizard.model.SpellsViewModel;
+import com.lebogang.triwizard.viewmodel.SpellsViewModel;
 import com.lebogang.triwizard.networking.NetworkUtils;
 import com.lebogang.triwizard.pojo.Spells;
 import com.lebogang.triwizard.repo.MyRepository;
