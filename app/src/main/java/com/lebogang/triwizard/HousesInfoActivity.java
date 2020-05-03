@@ -21,7 +21,7 @@ public class HousesInfoActivity extends AppCompatActivity {
     private final String TAG = HousesInfoActivity.class.getSimpleName();
 
     //A String object that holds the route that is being called/appended to the API Endpoint.
-    private final String ROUTE = "house";
+    private final String ROUTE = "houses";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

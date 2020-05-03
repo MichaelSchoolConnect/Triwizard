@@ -85,6 +85,6 @@ public class NetworkUtils {
     public static String genericEndpoint(String route, String id){
         return "https://www.potterapi.com/v1/"
                 + route + "/"
-                + id + "key=$2a$10$BD8PoevCo5yISOJlHy47geFYut1/qYjjtKHLQeHW2ZUD.3RndOJXa";
+                + id + "?key=$2a$10$BD8PoevCo5yISOJlHy47geFYut1/qYjjtKHLQeHW2ZUD.3RndOJXa";
     }
 }
