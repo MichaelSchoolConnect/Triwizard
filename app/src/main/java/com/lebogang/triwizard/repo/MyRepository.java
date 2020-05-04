@@ -297,6 +297,9 @@ public class MyRepository {
                             JSONObject object = jArray.getJSONObject(e);
                             house_data.values_0 = object.getString("values");
 
+                            /*JSONObject object1 = object.getJSONObject("members");
+                            house_data.values_1 = object1.getString("");*/
+
                             //Store the data into an ArrayList.
                             data.add(house_data);
                         }
@@ -349,6 +352,9 @@ public class MyRepository {
                     for(int i =0; i < jsonArray.length(); i++){
                         JSONObject jsonObject = new JSONObject(result);
                          charactersInfo.c_id = jsonObject.getString("_id");
+                        charactersInfo.role = jsonObject.getString("deathEater");
+                        charactersInfo.school = jsonObject.getString("species");
+                        charactersInfo.name = jsonObject.getString("name");
                     }
 
                     //Get id
@@ -358,8 +364,8 @@ public class MyRepository {
                     data.add(charactersInfo);
 
                     //Post the value(s) of the data to the LiveData Object.
-                    mutableCharactersInfoLiveData.postValue(data);
-                    Log.i("Characters Info: ", String.valueOf(charactersInfo.c_id));
+                    mutableCharactersInfoLiveData.postValue((List<CharactersInfo>) charactersInfo);
+                    Log.i("Characters Info: ", charactersInfo.c_id);
                 } catch (NullPointerException | JSONException j) {
                     j.printStackTrace();
                 }

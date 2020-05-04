@@ -1,29 +1,37 @@
 package com.lebogang.triwizard;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
-
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.TextView;
 
-import com.lebogang.triwizard.adapter.HousesInfoAdapter;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.widget.ContentLoadingProgressBar;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.lebogang.triwizard.adapter.CharacterInfoAdapter;
 import com.lebogang.triwizard.networking.NetworkUtils;
-import com.lebogang.triwizard.pojo.Characters;
 import com.lebogang.triwizard.pojo.CharactersInfo;
-import com.lebogang.triwizard.pojo.HousesInfo;
 import com.lebogang.triwizard.repo.MyRepository;
 import com.lebogang.triwizard.viewmodel.CharactersInfoViewModel;
-import com.lebogang.triwizard.viewmodel.HousesInfoViewModel;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class CharactersInfoActivity extends AppCompatActivity {
 
     //A tag for logging.
     private final String TAG = CharactersInfoActivity.class.getSimpleName();
+
+    //The CharactersAActivity context instead of calling .this all the time where a context is wanted.
+    private Context context = CharactersInfoActivity.this;
+
+    //Recyclerview that shows a list of houses.
+    private RecyclerView mRecyclerView;
+
+    //Adapter that binds data read  from the MyRepository class.
+    private CharacterInfoAdapter mAdapter;
 
     //A String object that holds the route that is being called/appended to the API Endpoint.
     private final String ROUTE = "characters";
@@ -33,7 +41,15 @@ public class CharactersInfoActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_characters_info);
 
-        final TextView textView = findViewById(R.id.charac_info_tv);
+        //Show LoadingProgressBar
+        final ContentLoadingProgressBar contentLoadingProgressBar = findViewById(R.id.char_loadingBar);
+        contentLoadingProgressBar.show();
+
+        //initializing the Recyclerview.
+        mRecyclerView = findViewById(R.id.charac_recyclerView_rv);
+
+        //Setting the Recyclerview in a Linear fashion layout via the LayoutManager.
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         // Setting up our view model
         CharactersInfoViewModel viewModel =
@@ -44,13 +60,11 @@ public class CharactersInfoActivity extends AppCompatActivity {
             @Override
             public void onChanged(List<CharactersInfo> housesInfoList) {
                 //Updating the UI.
-                //contentLoadingProgressBar.hide();
-                StringBuilder stringBuilder = new StringBuilder();
-                for(CharactersInfo h : housesInfoList){
-                    stringBuilder.append(h + "\n");
-                }
-                textView.setText(stringBuilder.toString());
-                Log.i(TAG, "Update from CharactersInfoViewModel: " + stringBuilder);
+                contentLoadingProgressBar.hide();
+
+                mAdapter = new CharacterInfoAdapter(context, housesInfoList);
+                mRecyclerView.setAdapter(mAdapter);
+                Log.i(TAG, "Update from ViewModel: ");
             }
         });
 
