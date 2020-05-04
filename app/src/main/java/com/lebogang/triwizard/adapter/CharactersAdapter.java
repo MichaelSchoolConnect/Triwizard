@@ -1,6 +1,7 @@
 package com.lebogang.triwizard.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,8 +11,11 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.lebogang.triwizard.CharactersInfoActivity;
+import com.lebogang.triwizard.HousesInfoActivity;
 import com.lebogang.triwizard.R;
 import com.lebogang.triwizard.pojo.Characters;
+import com.lebogang.triwizard.pojo.CharactersInfo;
 import com.lebogang.triwizard.pojo.Houses;
 
 import java.util.Collections;
@@ -21,13 +25,15 @@ public class CharactersAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
     private static String TAG = CharactersAdapter.class.getSimpleName();
 
+    private Context context;
+
     private LayoutInflater inflater;
     private List<Characters> data = Collections.emptyList();
 
     // Create constructor to initialize context and data sent from HousesActivity.
     public CharactersAdapter(Context context, List<Characters> data) {
         Log.i(TAG, "Creating Constructor.");
-
+        this.context = context;
         inflater = LayoutInflater.from(context);
         this.data = data;
     }
@@ -43,15 +49,26 @@ public class CharactersAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
     // Bind data
     @Override
-    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, final int position) {
         Log.i(TAG, "Binding data.");
-        // Get characters position of item in recyclerview to bind data and assign values from list
+        // Get charactersInfo position of item in recyclerview to bind data and assign values from list
         CharactersViewHolder myHolder = (CharactersViewHolder) holder;
-        Characters characters = data.get(position);
-        myHolder.name.setText(characters.name);
-        myHolder.role.setText(characters.role);
-        myHolder.house.setText(characters.house);
-        myHolder.school.setText(characters.school);
+        final Characters charactersInfo = data.get(position);
+        myHolder.name.setText(charactersInfo.name);
+        myHolder.role.setText(charactersInfo.role);
+        myHolder.school.setText(charactersInfo.school);
+
+        //Set the Recyclerview onClick and pass data to an Intent
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.i(TAG, "Position: " + position + " Name: " + charactersInfo.name
+                + " Id: " + charactersInfo._id);
+                Intent intent = new Intent(context, CharactersInfoActivity.class);
+                intent.putExtra("_id", charactersInfo._id);
+                context.startActivity(intent);
+            }
+        });
     }
 
     // return total item from List

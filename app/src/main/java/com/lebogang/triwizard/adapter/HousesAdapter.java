@@ -51,7 +51,6 @@ public class HousesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         // Get houses position of item in recyclerview to bind data and assign values from list
         HousesViewHolder housesViewHolder = (HousesViewHolder) holder;
         final Houses houses = data.get(position);
-        final String id = houses.id;
         housesViewHolder.textFishName.setText(houses.name);
         housesViewHolder.textSize.setText(houses.mascot);
         housesViewHolder.members.setText(houses.school);

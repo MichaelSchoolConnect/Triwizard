@@ -62,10 +62,13 @@ public class NetworkUtils {
      * @throws IOException Related to network and stream reading
      */
     public static String getResponseFromHttpUrl(URL url) throws IOException {
+        //Create HTTPURLConnection object.
         HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
         try {
             InputStream in = urlConnection.getInputStream();
 
+             //*This buffers the data, handles character encoding and allocates and dellocates the
+            //*//buffers as neede
             Scanner scanner = new Scanner(in);
             scanner.useDelimiter("\\A");
 

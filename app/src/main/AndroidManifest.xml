@@ -13,8 +13,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".HousesInfoActivity"></activity>
-        <!-- CharactersActivity -->
+        <activity android:name=".CharactersInfoActivity"></activity>
+        <activity android:name=".HousesInfoActivity" /> <!-- CharactersActivity -->
         <activity
             android:name=".CharactersActivity"
             android:label="@string/students"

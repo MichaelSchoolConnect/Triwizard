@@ -8,18 +8,19 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.lebogang.triwizard.networking.NetworkUtils;
 import com.lebogang.triwizard.pojo.Characters;
+import com.lebogang.triwizard.pojo.CharactersInfo;
 import com.lebogang.triwizard.pojo.Houses;
 import com.lebogang.triwizard.pojo.HousesInfo;
 import com.lebogang.triwizard.pojo.Spells;
 import com.lebogang.triwizard.threadexecutor.AppExecutors;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 public class MyRepository {
@@ -56,6 +57,9 @@ public class MyRepository {
     @NonNull
     private MutableLiveData<List<Characters>> mutableCharactersLiveData = new MutableLiveData<>();
 
+    @NonNull
+    private MutableLiveData<String> mutableCharactersInfoLiveData = new MutableLiveData<>();
+
     public static MyRepository getInstance() {
         if (instance == null) {
             synchronized (MyRepository.class) {
@@ -88,10 +92,15 @@ public class MyRepository {
         return mutableCharactersLiveData;
     }
 
+    @NonNull
+    public LiveData<String> getCharactersInfoLiveData() {
+        return mutableCharactersInfoLiveData;
+    }
+
     /**
-     *This method gets data off the main thread using an Executor(Runnable object)
-     * to read from a multi-dimension array
-     * */
+     * This method gets called from an Activity's onCreate method.
+     * It fetches data off the main thread using an Executor(Runnable object)
+     */
     public void getHouses() {
         //I made this into a local variable so it can be killed after calling this method to save resources.
         AppExecutors executors = new AppExecutors();
@@ -134,22 +143,15 @@ public class MyRepository {
                         //Post the value(s) of the data to the LiveData Object.
                         mutableHousesLiveData.postValue(data);
                         Log.i("Repo: ", String.valueOf(house_data.name));
-
-                        /*for(int e = 0; e < jArray.length(); e++){
-                            JSONObject object = jArray.getJSONObject(e);
-                            house_data.HOD = object.getString("values");
-                            data1.add(house_data);
-                            Log.i("Inner Array: ", String.valueOf(house_data.HOD));
-                        }*/
                     }
-                } catch (Exception j) {
+                } catch (NullPointerException | JSONException j) {
                     j.printStackTrace();
                 }
             }
         });
     }
 
-    public void getSpells(){
+    public void getSpells() {
         AppExecutors appExecutors = new AppExecutors();
         appExecutors.diskIO().execute(new Runnable() {
             @Override
@@ -188,14 +190,14 @@ public class MyRepository {
                         Log.i("Repo: ", String.valueOf(spells.spell));
 
                     }
-                } catch (Exception j) {
+                } catch (NullPointerException | JSONException j) {
                     j.printStackTrace();
                 }
             }
         });
     }
 
-    public void getCharacters(){
+    public void getCharacters() {
         AppExecutors appExecutors = new AppExecutors();
         appExecutors.diskIO().execute(new Runnable() {
             @Override
@@ -208,7 +210,7 @@ public class MyRepository {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                System.out.println("Spell results: " + result);
+                System.out.println("Character results: " + result);
                 JSONArray jArray = null;
                 try {
                     jArray = new JSONArray(result);
@@ -222,33 +224,36 @@ public class MyRepository {
                         Characters characters = new Characters();
 
                         //
+                        characters._id = jsonObject.getString("_id");
                         characters.name = jsonObject.getString("name");
-                        characters.role = jsonObject.getString("role");
                         characters.house = jsonObject.getString("bloodStatus");
-                        characters.school = jsonObject.getString("school");
+                        characters.school = jsonObject.getString("species");
 
                         //Store the data into an ArrayList.
                         data.add(characters);
 
                         //Post the value(s) of the data to the LiveData Object.
                         mutableCharactersLiveData.postValue(data);
-                        Log.i("Repo: ", String.valueOf(characters.role));
+                        Log.i("Characters: ", String.valueOf(characters.name));
 
                     }
-                } catch (Exception j) {
+                } catch (NullPointerException | JSONException j) {
                     j.printStackTrace();
                 }
             }
         });
     }
 
-    public void getHousesInfo(final String endPoint){
+    /**
+     * NOTE: PLEASE USE THIS AS A BENCHMARK FOR THAT ALSO APPLY TO THE ABOVE CALLER METHODS.
+     **/
+    public void getHousesInfo(final String endPoint) {
         //I made this into a local variable so it can be killed after calling this method to save resources.
         AppExecutors executors = new AppExecutors();
         executors.diskIO().execute(new Runnable() {
             @Override
             public void run() {
-                 //Initialize an object of the class House so we can append data to it.
+                //Initialize an object of the class House so we can append data to it.
                 HousesInfo house_data = new HousesInfo();
 
                 //A data structure that will hold a collection of the returned JSON objects/data.
@@ -261,8 +266,8 @@ public class MyRepository {
 
                 //The results that we get from the HTTP Response.
                 String result = null;
+                //Get the response from HTTP, if null, catch en exception.
                 try {
-                    //Get the response from HTTP, if null, catch en exception.
                     result = NetworkUtils.getResponseFromHttpUrl(url);
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -287,21 +292,75 @@ public class MyRepository {
                         house_data.id = jsonObject.getString("_id");
                         Log.i("Id", "Id: " + house_data.id);
 
-                        //Loop through the inner array
-                        for(int e = 0; e < jArray.length(); e++){
+                        //Access inside arrays
+                        for (int e = 0; e < jArray.length(); e++) {
                             JSONObject object = jArray.getJSONObject(e);
-                            house_data.values_1 = object.getString("values");
+                            house_data.values_0 = object.getString("values");
 
                             //Store the data into an ArrayList.
                             data.add(house_data);
-
-                            //Post the value(s) of the data to the LiveData Object.
-                            //Re-use the same object?
-                            mutableHousesInfoLiveData.postValue(data);
-                            Log.i("Houses Info: ", String.valueOf(house_data.values_0));
                         }
+
+                        //Post the value(s) of the data to the LiveData Object.
+                        mutableHousesInfoLiveData.postValue(data);
+                        Log.i("Houses Info: ", String.valueOf(house_data.values_0));
                     }
-                } catch (Exception j) {
+                } catch (NullPointerException | JSONException j) {
+                    j.printStackTrace();
+                }
+            }
+        });
+    }
+
+    public void getCharactersInfo(final String endPoint) {
+        //I made this into a local variable so it can be killed after calling this method to save resources.
+        AppExecutors executors = new AppExecutors();
+        executors.diskIO().execute(new Runnable() {
+            @Override
+            public void run() {
+                //Initialize an object of the class House so we can append data to it.
+                CharactersInfo charactersInfo = new CharactersInfo();
+
+                //A data structure that will hold a collection of the returned JSON objects/data.
+                List<CharactersInfo> data = new ArrayList<>();
+
+                //Pass the parameter @endPoint and build it as a URL.
+                URL url = NetworkUtils.buildUrl(endPoint);
+
+                //The results that we get from the HTTP Response.
+                String result = null;
+
+                //Get the response from HTTP, if null, catch en exception.
+                try {
+                    result = NetworkUtils.getResponseFromHttpUrl(url);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                //Printing out the results to the console for debugging purposes.
+                System.out.println("Results: " + result);
+
+                //Try to get the data.
+                try {
+                    assert result != null;
+                    String id = null;
+                    //Initialize JSONObject from JSON string.
+                    JSONObject jsonArray = new JSONObject(result);
+                    for(int i =0; i < jsonArray.length(); i++){
+                        JSONObject jsonObject = new JSONObject(result);
+                         charactersInfo.c_id = jsonObject.getString("_id");
+                    }
+
+                    //Get id
+                     id = jsonArray.getString("_id");
+                    Log.i("Id", "Id: " + id);
+
+                    data.add(charactersInfo);
+
+                    //Post the value(s) of the data to the LiveData Object.
+                    mutableCharactersInfoLiveData.postValue(String.valueOf(data));
+                    Log.i("Characters Info: ", String.valueOf(charactersInfo.c_id));
+                } catch (NullPointerException | JSONException j) {
                     j.printStackTrace();
                 }
             }
