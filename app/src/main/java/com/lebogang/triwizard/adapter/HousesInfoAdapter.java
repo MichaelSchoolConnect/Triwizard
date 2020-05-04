@@ -46,7 +46,7 @@ public class HousesInfoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, final int position) {
         Log.i(TAG, "Binding data.");
-        // Get housesInfo position of item in recyclerview to bind data and assign values from list
+        // Get housesInfo position of item in recyclerview to bind data and assign values from list.
         HousesInfoViewHolder housesViewHolder = (HousesInfoViewHolder) holder;
         final HousesInfo housesInfo = data.get(position);
 
