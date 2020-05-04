@@ -64,9 +64,14 @@ public class HousesInfoActivity extends AppCompatActivity {
             public void onChanged(List<HousesInfo> housesInfoList) {
                 //Updating the UI.
                 contentLoadingProgressBar.hide();
+
+                StringBuilder o = new StringBuilder();
+                for(HousesInfo h : housesInfoList){
+                    o.append(h + "\n");
+                }
                 mAdapter = new HousesInfoAdapter(context, housesInfoList);
                 mRecyclerView.setAdapter(mAdapter);
-                Log.i(TAG, "Update from ViewModel: " + housesInfoList);
+                Log.i(TAG, "Update from ViewModel: " + o);
             }
         });
 

@@ -58,7 +58,7 @@ public class MyRepository {
     private MutableLiveData<List<Characters>> mutableCharactersLiveData = new MutableLiveData<>();
 
     @NonNull
-    private MutableLiveData<String> mutableCharactersInfoLiveData = new MutableLiveData<>();
+    private MutableLiveData<List<CharactersInfo>> mutableCharactersInfoLiveData = new MutableLiveData<>();
 
     public static MyRepository getInstance() {
         if (instance == null) {
@@ -93,7 +93,7 @@ public class MyRepository {
     }
 
     @NonNull
-    public LiveData<String> getCharactersInfoLiveData() {
+    public LiveData<List<CharactersInfo>> getCharactersInfoLiveData() {
         return mutableCharactersInfoLiveData;
     }
 
@@ -234,7 +234,7 @@ public class MyRepository {
 
                         //Post the value(s) of the data to the LiveData Object.
                         mutableCharactersLiveData.postValue(data);
-                        Log.i("Characters: ", String.valueOf(characters.name));
+                        Log.i("Characters: ", characters.name);
 
                     }
                 } catch (NullPointerException | JSONException j) {
@@ -358,7 +358,7 @@ public class MyRepository {
                     data.add(charactersInfo);
 
                     //Post the value(s) of the data to the LiveData Object.
-                    mutableCharactersInfoLiveData.postValue(String.valueOf(data));
+                    mutableCharactersInfoLiveData.postValue(data);
                     Log.i("Characters Info: ", String.valueOf(charactersInfo.c_id));
                 } catch (NullPointerException | JSONException j) {
                     j.printStackTrace();

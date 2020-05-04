@@ -40,14 +40,17 @@ public class CharactersInfoActivity extends AppCompatActivity {
                 ViewModelProviders.of(this).get(CharactersInfoViewModel.class);
 
         // Observe the view model
-        viewModel.getCharactersInfoLiveData().observe(this, new Observer<String>() {
+        viewModel.getCharactersInfoLiveData().observe(this, new Observer<List<CharactersInfo>>() {
             @Override
-            public void onChanged(String housesInfoList) {
+            public void onChanged(List<CharactersInfo> housesInfoList) {
                 //Updating the UI.
                 //contentLoadingProgressBar.hide();
-                textView.setText(String.valueOf(housesInfoList));
-
-                Log.i(TAG, "Update from CharactersInfoViewModel: " + housesInfoList);
+                StringBuilder stringBuilder = new StringBuilder();
+                for(CharactersInfo h : housesInfoList){
+                    stringBuilder.append(h + "\n");
+                }
+                textView.setText(stringBuilder.toString());
+                Log.i(TAG, "Update from CharactersInfoViewModel: " + stringBuilder);
             }
         });
 

@@ -17,7 +17,7 @@ public class CharactersInfoViewModel extends AndroidViewModel {
     private MyRepository repo = MyRepository.getInstance();
 
     @NonNull
-    private LiveData<String> mLiveData;
+    private LiveData<List<CharactersInfo>> mLiveData;
 
     public CharactersInfoViewModel(@NonNull Application application) {
         super(application);
@@ -26,7 +26,7 @@ public class CharactersInfoViewModel extends AndroidViewModel {
     }
 
     @NonNull
-    public LiveData<String> getCharactersInfoLiveData() {
+    public LiveData<List<CharactersInfo>> getCharactersInfoLiveData() {
         return mLiveData;
     }
 }
