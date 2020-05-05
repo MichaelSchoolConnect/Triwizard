@@ -153,7 +153,7 @@ public class MyRepository {
 
     public void getSpells() {
         AppExecutors appExecutors = new AppExecutors();
-        appExecutors.diskIO().execute(new Runnable() {
+        appExecutors.networkIO().execute(new Runnable() {
             @Override
             public void run() {
                 List<Spells> data = new ArrayList<>();

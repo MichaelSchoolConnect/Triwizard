@@ -15,8 +15,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.lebogang.triwizard.adapter.HousesAdapter;
 import com.lebogang.triwizard.networking.NetworkUtils;
 import com.lebogang.triwizard.pojo.Houses;
-import com.lebogang.triwizard.viewmodel.HousesViewModel;
 import com.lebogang.triwizard.repo.MyRepository;
+import com.lebogang.triwizard.viewmodel.HousesViewModel;
 
 import java.util.List;
 
@@ -66,7 +66,7 @@ public class HousesActivity extends AppCompatActivity {
         });
 
         //condition to check whether to request data provided there's an internet connection or not.
-        if(!NetworkUtils.isInternetAvailable()){
+        if (NetworkUtils.isInternetAvailable()) {
             // This will start the off-the-UI-thread work that we want to perform.
             MyRepository.getInstance().getHouses();
         }else{

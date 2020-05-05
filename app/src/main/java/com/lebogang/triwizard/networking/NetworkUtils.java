@@ -28,10 +28,10 @@ public class NetworkUtils {
         try {
             InetAddress ipAddr = InetAddress.getByName("google.com");
             //You can replace it with your name
-            return !ipAddr.equals("");
+            return ipAddr.equals("");
 
         } catch (Exception e) {
-            return false;
+            return true;
         }
     }
 
@@ -63,8 +63,6 @@ public class NetworkUtils {
     public static String getResponseFromHttpUrl(URL url) throws IOException {
         //Create HTTPURLConnection object.
         HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
-        //urlConnection.setRequestMethod("GET");
-        //urlConnection.setConnectTimeout(6000);
 
         try {
             //Open
