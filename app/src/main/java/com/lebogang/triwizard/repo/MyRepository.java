@@ -364,7 +364,7 @@ public class MyRepository {
                     data.add(charactersInfo);
 
                     //Post the value(s) of the data to the LiveData Object.
-                    mutableCharactersInfoLiveData.postValue((List<CharactersInfo>) charactersInfo);
+                    mutableCharactersInfoLiveData.postValue(data);
                     Log.i("Characters Info: ", charactersInfo.c_id);
                 } catch (NullPointerException | JSONException j) {
                     j.printStackTrace();

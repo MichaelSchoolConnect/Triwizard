@@ -39,43 +39,49 @@ public class CharactersInfoActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_characters_info);
+        try {
+            setContentView(R.layout.activity_characters_info);
 
-        //Show LoadingProgressBar
-        final ContentLoadingProgressBar contentLoadingProgressBar = findViewById(R.id.char_loadingBar);
-        contentLoadingProgressBar.show();
+            //Show LoadingProgressBar
+            final ContentLoadingProgressBar contentLoadingProgressBar = findViewById(R.id.char_loadingBar);
+            contentLoadingProgressBar.show();
 
-        //initializing the Recyclerview.
-        mRecyclerView = findViewById(R.id.charac_recyclerView_rv);
+            //initializing the Recyclerview.
+            mRecyclerView = findViewById(R.id.charac_recyclerView_rv);
 
-        //Setting the Recyclerview in a Linear fashion layout via the LayoutManager.
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+            //Setting the Recyclerview in a Linear fashion layout via the LayoutManager.
+            mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        // Setting up our view model
-        CharactersInfoViewModel viewModel =
-                ViewModelProviders.of(this).get(CharactersInfoViewModel.class);
+            // Setting up our view model
+            CharactersInfoViewModel viewModel =
+                    ViewModelProviders.of(this).get(CharactersInfoViewModel.class);
 
-        // Observe the view model
-        viewModel.getCharactersInfoLiveData().observe(this, new Observer<List<CharactersInfo>>() {
-            @Override
-            public void onChanged(List<CharactersInfo> housesInfoList) {
-                //Updating the UI.
-                contentLoadingProgressBar.hide();
+            // Observe the view model
+            viewModel.getCharactersInfoLiveData().observe(this, new Observer<List<CharactersInfo>>() {
+                @Override
+                public void onChanged(List<CharactersInfo> housesInfoList) {
+                    //Updating the UI.
+                    contentLoadingProgressBar.hide();
 
-                mAdapter = new CharacterInfoAdapter(context, housesInfoList);
-                mRecyclerView.setAdapter(mAdapter);
-                Log.i(TAG, "Update from ViewModel: ");
+                    mAdapter = new CharacterInfoAdapter(context, housesInfoList);
+                    mRecyclerView.setAdapter(mAdapter);
+                    Log.i(TAG, "Update from ViewModel: ");
+                }
+            });
+
+            //Receive data sent to this class via a Bundle.
+            Bundle extras = getIntent().getExtras();
+            if (extras != null) {
+                String id = extras.getString("_id");
+                Log.i(TAG, "Log Id: " + id);
+                String url = NetworkUtils.genericEndpoint(ROUTE, id);
+                // This will start the off-the-UI-thread work that we want to perform.
+                MyRepository.getInstance().getCharactersInfo(url);
             }
-        });
 
-        //Receive data sent to this class via a Bundle.
-        Bundle extras = getIntent().getExtras();
-        if (extras != null) {
-            String id = extras.getString("_id");
-            Log.i(TAG, "Log Id: " + id);
-            String url = NetworkUtils.genericEndpoint(ROUTE, id);
-            // This will start the off-the-UI-thread work that we want to perform.
-            MyRepository.getInstance().getCharactersInfo(url);
+
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }

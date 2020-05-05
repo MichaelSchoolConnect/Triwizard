@@ -10,6 +10,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.lebogang.triwizard.CharactersInfoActivity;
 import com.lebogang.triwizard.R;
 import com.lebogang.triwizard.pojo.CharactersInfo;
 
@@ -18,7 +19,7 @@ import java.util.List;
 
 public class CharacterInfoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private static String TAG = HousesInfoAdapter.class.getSimpleName();
+    private static String TAG = CharactersInfoActivity.class.getSimpleName();
 
     private Context context;
 
@@ -38,7 +39,13 @@ public class CharacterInfoAdapter extends RecyclerView.Adapter<RecyclerView.View
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         Log.i(TAG, "Inflating the layout.");
-        View view = inflater.inflate(R.layout.character_info_item, parent, false);
+        View view = null;
+        try {
+            view = inflater.inflate(R.layout.character_info_item, parent, false);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         return new CharacterInfoViewHolder(view);
     }
 
@@ -46,11 +53,11 @@ public class CharacterInfoAdapter extends RecyclerView.Adapter<RecyclerView.View
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, final int position) {
         Log.i(TAG, "Binding data.");
-        // Get housesInfo position of item in recyclerview to bind data and assign values from list
-        CharacterInfoViewHolder housesViewHolder = (CharacterInfoViewHolder) holder;
-        final CharactersInfo housesInfo = data.get(position);
+        // Get charactersInfo position of item in recyclerview to bind data and assign values from list
+        CharacterInfoViewHolder characterInfoViewHolder = (CharacterInfoViewHolder) holder;
+        final CharactersInfo charactersInfo = data.get(position);
 
-        housesViewHolder.value_0.setText(housesInfo.name);
+        characterInfoViewHolder.value_0.setText(charactersInfo.name);
     }
 
     // return total item from List

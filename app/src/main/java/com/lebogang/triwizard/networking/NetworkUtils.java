@@ -1,7 +1,6 @@
 package com.lebogang.triwizard.networking;
 
 import android.content.Context;
-import android.net.ConnectivityManager;
 import android.net.Uri;
 
 import java.io.IOException;
@@ -64,16 +63,22 @@ public class NetworkUtils {
     public static String getResponseFromHttpUrl(URL url) throws IOException {
         //Create HTTPURLConnection object.
         HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+        //urlConnection.setRequestMethod("GET");
+        //urlConnection.setConnectTimeout(6000);
+
         try {
+            //Open
             InputStream in = urlConnection.getInputStream();
 
-             //*This buffers the data, handles character encoding and allocates and dellocates the
-            //*//buffers as neede
+            //This buffers the data, handles character encoding and allocates and de-allocates the
+            //buffers as needed.
             Scanner scanner = new Scanner(in);
             scanner.useDelimiter("\\A");
 
+            //If there's still something in the stream...
             boolean hasInput = scanner.hasNext();
             if (hasInput) {
+                //keep on reading...
                 return scanner.next();
             } else {
                 return null;
